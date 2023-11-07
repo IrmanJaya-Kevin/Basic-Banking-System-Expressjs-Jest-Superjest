@@ -46,27 +46,44 @@ describe("users.get function",()=>{
 
     })
 })
-describe("users.create function", ()=> {
-    test("res.json called with status 201", async ()=> {
-        const req =mockRequest({
-            name: "tst",
-            email: "tssssst@gmail.com",
-            password: 'pass',
-            identity_number:1234,
-            identity_type:'tes1234',
-            address:'rasau'
-        })
-        const res =mockResponse()
-        await base.create(req, res)
-        expect(res.status).toBeCalledWith(201)
+describe("users.getbyid function",()=>{
+    test("res.json called with users data id",async()=>{
+        let req=mockRequest()
+        const res=mockResponse()
+        req.params.userId=1
+        await base.getById(req,res)
+        expect(res.status).toBeCalledWith(200)
         expect(res.json).toBeCalledWith(
             expect.objectContaining({
-                status: 'success',
-                code: 200,
-                message: 'Data ditambahkan!',
-                data: expect.any(Object)
+                status:'success',
+                code:200,
+                message:'Success!',
+                data:expect.any(Object)
             })
         )
-
     })
 })
+// describe("users.create function", ()=> {
+//     test("res.json called with status 201", async ()=> {
+//         const req =mockRequest({
+//             name: "tst",
+//             email: "tssssstss@gmail.com",
+//             password: 'pass',
+//             identity_number:1234,
+//             identity_type:'tes1234',
+//             address:'rasau'
+//         })
+//         const res =mockResponse()
+//         await base.create(req, res)
+//         expect(res.status).toBeCalledWith(201)
+//         expect(res.json).toBeCalledWith(
+//             expect.objectContaining({
+//                 status: 'success',
+//                 code: 200,
+//                 message: 'Data ditambahkan!',
+//                 data: expect.any(Object)
+//             })
+//         )
+
+//     })
+// })

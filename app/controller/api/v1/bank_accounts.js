@@ -79,6 +79,26 @@ module.exports = {
             // data: result
         })
         
+    },
+    async destroy(req, res){
+        if(!req.params.accountId) res.status(400).json({ 
+            status: 'fail', 
+            code: 400, 
+            message: 'Bad Request! id is required',
+        })
+        accountId=req.params.accountId;
+        const bankAccount = await prisma.bankAccount.delete({
+            where: {
+              id: +accountId,
+            },
+          })
+        if(bankAccount){
+            res.status(200).json({ 
+                status: 'success', 
+                code: 200, 
+                message: 'Success Data terhapus!',
+            })
+        }
     }
    
    

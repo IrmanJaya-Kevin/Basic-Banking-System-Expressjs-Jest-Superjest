@@ -6,7 +6,8 @@ const flash=require('express-flash')
 const session=require('express-session')
 const routers=require('./router')
 const swaggerJSON = require('./openapi.json')
-const swaggerUI=require('swagger-ui-express')
+const swaggerUI=require('swagger-ui-express');
+const passport = require('./utils/passport');
 
 
 app.use(express.json())
@@ -17,7 +18,8 @@ app.use(session({
     saveUninitialized:true,
 }))
 app.use(flash())
-
+app.use(passport.initialize())
+app.use(passport.session())
 app.set("view engine","ejs")
 app.set("views",path.join(__dirname,'./app/view'))
 

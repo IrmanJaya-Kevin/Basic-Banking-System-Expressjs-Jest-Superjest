@@ -1,5 +1,6 @@
 const { PrismaClient}=require('@prisma/client')
 const {encryptPassword,checkPassword}=require('../../../../utils/auth')
+const {JWTsign}=require('../../../../utils/jwt')
 
 
 const prisma = new PrismaClient();
@@ -26,10 +27,22 @@ module.exports={
                 message:"Password Salah"
             })
         }
+
+        delete user.password
+        const token=await JWTsign(user)
         return res.status(201).json({
             status:"Success!",
             message:"Berhasil Login!",
-            data:user
+            data:{user,token},
+        })
+    },
+    async whoami(req,res){
+        return res.status(200).json({
+            status:"Success",
+            message:"OK",
+            data:{
+                user:req.user
+            }
         })
     },
     async register(req,res){
@@ -83,6 +96,19 @@ module.exports={
             next(error) //mengirimkan error ke middleware dan ditampilkan di ejs
         }
        
+    },
+    authUser:async(email,password,done)=>{
+        try{
+            const user=await prisma.user.findUnique({
+                where:{email}
+            })
+            if(!user||!await checkPassword(password,user.password)){
+                return done(null, false, {message:'Invalid email or password'})
+            }
+            return done(null,user)
+        }catch(err){
+            return done(null, false, {message: err.message})
+        }
     }
 
 }

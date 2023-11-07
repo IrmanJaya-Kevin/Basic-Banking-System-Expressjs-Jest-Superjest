@@ -92,6 +92,27 @@ module.exports = {
        
        
         
+    },
+    async destroy(req, res){
+        if(!req.params.userId) res.status(400).json({ 
+            status: 'fail', 
+            code: 400, 
+            message: 'Bad Request! id is required',
+        })
+        userId=req.params.userId;
+        // console.log(userId);
+        const user = await prisma.user.delete({
+            where: {
+              id: +userId,
+            },
+          })
+        if(user){
+            res.status(200).json({ 
+                status: 'success', 
+                code: 200, 
+                message: 'Success Data terhapus!',
+            })
+        }
     }
    
 }
