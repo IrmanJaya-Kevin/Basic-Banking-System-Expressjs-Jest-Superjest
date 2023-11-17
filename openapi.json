@@ -37,12 +37,30 @@
         "description": "Creates list of users with given input array",
         "operationId": "create",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Users"
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "identity_number": {
+                    "type": "integer"
+                  },
+                  "address": {
+                    "type": "string"
+                  },
+                  "identity_type": {
+                    "type": "string"
+                  }
                 }
               }
             }
@@ -105,12 +123,24 @@
         "description": "Creates list of users with given input array",
         "operationId": "createdata",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/BankAccount"
+                "type": "object",
+                "properties": {
+                  "bank_name": {
+                    "type": "string"
+                  },
+                  "account_number": {
+                    "type": "integer"
+                  },
+                  "balance": {
+                    "type": "number"
+                  },
+                  "userId": {
+                    "type": "integer"
+                  }
                 }
               }
             }
@@ -173,12 +203,21 @@
         "description": "Creates list of transaction with given input array",
         "operationId": "createdata transaction",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Transaction"
+                "type": "object",
+                "properties": {
+                  "source_account_id": {
+                    "type": "integer"
+                  },
+                  "destination_account_number": {
+                    "type": "integer"
+                  },
+                  "amount": {
+                    "type": "number"
+                  }
                 }
               }
             }
@@ -362,27 +401,24 @@
         ],
         "summary": "Logs user into the system",
         "description": "",
-        "operationId": "login",
-        "parameters": [
-          {
-            "name": "email",
-            "in": "query",
-            "description": "email for login",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "description": "password",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Berhasil Login!!",
@@ -415,36 +451,27 @@
         ],
         "summary": "Register user into the system",
         "description": "",
-        "operationId": "register",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "description": "The user name for register",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "email",
-            "in": "query",
-            "description": "email for register",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "password",
-            "in": "query",
-            "description": "The password for register in clear text",
-            "required": true,
-            "schema": {
-              "type": "string"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              }
             }
           }
-        ],
+        },
         "responses": {
           "201": {
             "description": "Berhasil Register!",
@@ -534,11 +561,6 @@
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "example": 10
-          },
           "email": {
             "type": "string",
             "example": "kevin@gmail.com"
@@ -564,11 +586,6 @@
           "address"
         ],
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "example": 10
-          },
           "identity_type": {
             "type": "string",
             "example": "test"

@@ -31,6 +31,7 @@ model Profile{
 model BankAccount{
   id Int @id @default(autoincrement())
   bank_name String
+  // account_number Int @unique
   account_number Int
   balance Float
   createdAt DateTime @default(now())
