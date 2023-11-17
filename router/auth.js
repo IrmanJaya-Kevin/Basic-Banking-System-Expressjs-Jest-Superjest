@@ -9,7 +9,7 @@ const passport=require('../utils/passport')
 
 router.post('/api/v1/auth/login', controller.auth.login)
 router.post('/api/v1/auth/register', controller.auth.register)
-router.get('/api/v1/auth/whoami', auth,controller.auth.whoami)
+router.post('/api/v1/auth/whoami', auth,controller.auth.whoami)
 
 
 router.get('/register',(req,res)=>{
