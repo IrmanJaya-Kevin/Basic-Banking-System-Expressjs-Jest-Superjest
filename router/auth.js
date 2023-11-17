@@ -6,6 +6,7 @@ const {auth}=require('../utils/jwt')
 
 const passport=require('../utils/passport')
 
+const passportOAUTH = require('../utils/oauth');
 
 router.post('/api/v1/auth/login', controller.auth.login)
 router.post('/api/v1/auth/register', controller.auth.register)
@@ -27,5 +28,16 @@ router.post('/login',passport.authenticate('local',{
     failureRedirect:'/login'
 }))
 
+router.get('/auth/google', 
+    passportOAUTH.authenticate('google', {
+        scope: ['profile', 'email']
+    })
+)
+router.get('/api/auth/callback/google', 
+    passportOAUTH.authenticate('google', {
+        failureRedirect: '/login',
+        session: false
+    }), controller.auth.oauth
+)
 
 module.exports = router;
