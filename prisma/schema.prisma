@@ -16,6 +16,7 @@ model User{
   name String
   password String?
   googleId String?
+  tokenReset String?
   profile Profile?
   bankAccount BankAccount[]
 }

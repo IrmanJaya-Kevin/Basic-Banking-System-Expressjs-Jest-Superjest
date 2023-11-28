@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 
 module.exports={
     async login(req,res){
+        // console.log(req.body)
         const {email,password}=req.body
 
         const user=await prisma.user.findFirst({
@@ -71,7 +72,32 @@ module.exports={
             data:createUser
         })
     },
+    //  async registerForm(req,res){
+      
+    //         const{email,password,name}=req.body;
+    //         const user= await prisma.user.findFirst({
+    //             where:{email}
+    //         })
+    //         if(user){
+    //            req.flash("error","Email sudah terdaftar!")
+    //            return res.redirect('/register')
+    //         }
+    
+    //         const createUser=await prisma.user.create({
+    //             data:{
+    //                 email,
+    //                 name,
+    //                 password: await encryptPassword(password)
+    //             }
+    //         })
+    
+    //         req.flash("success","Berhasil Register!")
+    //         return res.redirect('/login')
+        
+       
+    // },
      registerForm: async (req,res,next)=>{
+        console.log(req.body)
         try {
             const{email,password,name}=req.body;
             const user= await prisma.user.findFirst({
@@ -120,5 +146,82 @@ module.exports={
             message: "Berhasil Login!",
             data: { token }
         })
+    },
+    // async changePassword(req,res){
+    //     const{email,password,resetToken}=req.body;
+    //     console.log(req.boyd)
+    //     const user= await prisma.user.findMany({
+    //         where: {
+    //             email:email,
+    //             tokenReset: resetToken
+    //         }
+    //     })
+    //     if(user){
+    //         const update= await prisma.user.update({
+    //             where :{
+    //                 email: email,
+    //             },
+    //             data:{
+    //                 tokenReset: '',
+    //                 password: await encryptPassword(password)
+    //             }
+    //         });
+    //     }else{
+    //         return res.status(404).json({
+    //             status:"Fail!",
+    //             message:"Gagal mengganti password!"
+    //         })
+    //     }
+
+    //     return res.status(201).json({
+    //         status:'success',
+    //         code:200,
+    //         message:'Berhasil mengganti password!',
+    //         data:createUser
+    //     })
+    // },
+    changePassword: async (req,res,next)=>{
+        // console.log(req.body)
+        try {
+            const{email,password,resetToken,c_password}=req.body;
+            // console.log(req.boyd)
+            if(password==c_password){
+                const user= await prisma.user.findMany({
+                    where: {
+                        email:email,
+                        tokenReset: resetToken
+                    }
+                })
+                if(user){
+                    const update= await prisma.user.update({
+                        where :{
+                            email: email,
+                        },
+                        data:{
+                            tokenReset: '',
+                            password: await encryptPassword(password)
+                        }
+                    });
+                }else{
+                    return res.status(404).json({
+                        status:"Fail!",
+                        message:"Gagal mengganti password!"
+                    })
+                }
+            }else{
+                return res.status(404).json({
+                    status:"Fail!",
+                    message:"Password confirm tidak sama!"
+                })
+            }
+         
+    
+         
+        } catch (error) {
+            next(error) //mengirimkan error ke middleware dan ditampilkan di ejs
+        }
+        return res.redirect('/login')
+       
+       
     }
 }
