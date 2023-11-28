@@ -16,6 +16,9 @@ const passport = require('./utils/passport');
 const ejs=require('ejs')
 const morgan=require('morgan')
 
+const http = require('http').Server(app)
+const io = require('./libs/io')(http)
+
 const nodemailer=require('nodemailer')
 
 
@@ -37,6 +40,11 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.set("view engine","ejs")
 app.set("views",path.join(__dirname,'./app/view'))
+
+app.use((req,res,next)=>{
+  req.io=io;
+  return next();
+});
 
 Sentry.init({
     dsn: 'https://3285796e1ebb8a2973821ef7173be5b7@o4506258327601152.ingest.sentry.io/4506258629853184',
@@ -115,6 +123,9 @@ app.use(function onError(err, req, res, next) {
     res.statusCode = 500;
     res.end(res.sentry + "\n");
   });
+
+
+
 
 app.listen(port, () => 
     console.log(`Server runs at http://localhost:${port}`))

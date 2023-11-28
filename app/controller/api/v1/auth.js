@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 module.exports={
     async login(req,res){
         // console.log(req.body)
+        req.io.emit('notification','berhasil registrasi!!');
         const {email,password}=req.body
 
         const user=await prisma.user.findFirst({
@@ -97,7 +98,6 @@ module.exports={
        
     // },
      registerForm: async (req,res,next)=>{
-        console.log(req.body)
         try {
             const{email,password,name}=req.body;
             const user= await prisma.user.findFirst({
@@ -117,6 +117,7 @@ module.exports={
             })
     
             req.flash("success","Berhasil Register!")
+           
             return res.redirect('/login')
         } catch (error) {
             next(error) //mengirimkan error ke middleware dan ditampilkan di ejs
